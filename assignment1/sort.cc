@@ -46,7 +46,7 @@ void merge(int* arr, int l, int m, int r){
     int p1=l;
     int p2=m+1;
     int p3=l;
-    int sorted[INPUT_SIZE];
+    int sorted[MAXSIZE];
 
     while( p1 != m+1 && p2 != r+1){
         if( arr[p1] > arr[p2] ){
@@ -150,7 +150,7 @@ void heapsort(int* arr, int n){
         heapify(heap, n, i);
     }
     // build heap done
-    int sorted[INPUT_SIZE];
+    int sorted[MAXSIZE];
 
     int i=n; // 가지고 있는 원소 개수 i
     while( i >= 1){
@@ -180,7 +180,6 @@ void quicksort(int* arr, int n){
     }
     arr[n-1] = arr[partition];
     arr[partition] = p;
-
     quicksort(arr, partition);
     quicksort(arr+(partition+1), n - (partition+1));
 }

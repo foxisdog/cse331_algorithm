@@ -1,7 +1,7 @@
 #ifndef SORT_H
 #define SORT_H
 
-#define INPUT_SIZE 1000
+#define MAXSIZE 1000000
 
 void insertionsort(int* arr, int n);
 void selectionsort(int* arr, int n);

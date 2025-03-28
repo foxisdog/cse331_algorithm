@@ -5,7 +5,6 @@
 
 void insertionsort(int* arr, int n);
 void selectionsort(int* arr, int n);
-void merge(int* arr, int left, int mid, int right);
 void mergesort(int* arr, int left, int right);
 void heapsort(int* arr, int n);
 void bubblesort(int* arr, int n);

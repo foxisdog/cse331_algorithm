@@ -80,12 +80,85 @@ void mergesort(int* arr, int l, int r){
     merge(arr, l, m, r);
 }
 
-void heapsort(int* arr, int n){
-
+void bubblesort(int* arr, int n){
+    bool cond=1;
+    int tmp;
+    while(cond){
+        cond = 0;
+        for(int i=0; i<n-1; i++){
+            if(arr[i] > arr[i+1]){
+                tmp = arr[i];
+                arr[i] = arr[i+1];
+                arr[i+1]= tmp;
+                cond = 1;
+            }
+        }
+    }
 }
 
-void bubblesort(int* arr, int n){
+void heapify(int* heap, int max_index, int current){
+    int left;
+    int right;
+    int cur = current;
+    int tmp;
 
+    while ( 2*cur <= max_index){ // 자식노드가 존재하는가?
+        if( 2*cur +1 <= max_index){ //오른쪽도 있나요?
+            left = 2 * cur;
+            right = 2 * cur + 1;
+            if( heap[left] < heap[right]){// 왼쪽이 더작음
+                if(heap[left] < heap[cur]){
+                    tmp = heap[left];
+                    heap[left] = heap[cur];
+                    heap[cur] = tmp;
+                    cur = left;
+                }else{
+                    break;
+                }
+            }else{//오른쪽이 더작음
+                if(heap[right] < heap[cur]){
+                    tmp = heap[right];
+                    heap[right] = heap[cur];
+                    heap[cur] =tmp;
+                    cur =right;
+                }else{
+                    break;
+                }
+            }
+            
+        }else{
+            left = 2 * cur;
+            if( heap[left] < heap[cur] ){
+                tmp = heap[cur];
+                heap[cur] = heap[left];
+                heap[left] = tmp;
+                cur = left;
+            }else{
+                break;
+            }
+        }
+    }
+}
+
+void heapsort(int* arr, int n){
+    int* heap = arr - 1; // min heap
+    for(int i= n/2; i>=1; i--){
+        heapify(heap, n, i);
+    }
+    // build heap done
+    int sorted[INPUT_SIZE];
+
+    int i=n; // 가지고 있는 원소 개수 i
+    while( i >= 1){
+        sorted[n-i] = heap[1];
+        heap[1] = heap[i];
+        i--;
+        heapify(heap,i,1);
+    }
+
+    for(int i=0; i<n; i++){
+        arr[i] = sorted[i];
+    }
 }
 
 void quicksort(int* arr, int n){

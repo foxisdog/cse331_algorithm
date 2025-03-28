@@ -8,4 +8,4 @@ main.o:	main.cc
 sort.o:	sort.cc
 	$(CXX) $(CXXFLAGS) -c sort.cc
 clean:
-	rm -f main *.o	
+	rm -f main *.o

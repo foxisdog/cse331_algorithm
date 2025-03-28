@@ -5,11 +5,15 @@ void insertionsort(int* arr, int n){
     for(int i=1; i<n; i++){
         tmp = arr[i];
         for(int j=i-1; j>=0; j--){
-            if( arr[j] < tmp ){
-                arr[j+1] = tmp;
-            }else{
+            if( arr[j] > tmp ){
                 arr[j+1] = arr[j];
+            }else{
+                arr[j+1] = tmp;
+                break;
             }
+        }
+        if(arr[0]>tmp){
+            arr[0] = tmp;
         }
     }
 }
@@ -162,5 +166,21 @@ void heapsort(int* arr, int n){
 }
 
 void quicksort(int* arr, int n){
+    if(n<=1) return;
+    int p=arr[n-1];
+    int tmp;
+    int partition=0;
+    for(int i=0; i<n-1; i++){
+        if(arr[i] < p){
+            tmp = arr[partition];
+            arr[partition] = arr[i];
+            arr[i] = tmp;
+            partition++;
+        }
+    }
+    arr[n-1] = arr[partition];
+    arr[partition] = p;
 
+    quicksort(arr, partition);
+    quicksort(arr+(partition+1), n - (partition+1));
 }

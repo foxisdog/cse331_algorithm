@@ -1,4 +1,5 @@
 #include "sort.h"
+#include <random>
 
 void insertionsort(int* arr, int n){
     int tmp;
@@ -85,16 +86,17 @@ void mergesort(int* arr, int l, int r){
 }
 
 void bubblesort(int* arr, int n){
-    bool cond=1;
+    bool is_swap=1;
     int tmp;
-    while(cond){
-        cond = 0;
-        for(int i=0; i<n-1; i++){
+    for(int index=0; is_swap && index <n-1; index++){
+        is_swap = 0;
+
+        for(int i=0; i<n-1-index; i++){
             if(arr[i] > arr[i+1]){
                 tmp = arr[i];
                 arr[i] = arr[i+1];
                 arr[i+1]= tmp;
-                cond = 1;
+                is_swap = 1;
             }
         }
     }
@@ -167,8 +169,17 @@ void heapsort(int* arr, int n){
 
 void quicksort(int* arr, int n){
     if(n<=1) return;
-    int p=arr[n-1];
     int tmp;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(0, n-1);
+    int pindex = dist(gen);
+    tmp = arr[n-1];
+    arr[n-1] = arr[pindex];
+    arr[pindex] = tmp;
+    // pivot 을 범위내 랜덤하게 선택
+    
+    int p=arr[n-1];
     int partition=0;
     for(int i=0; i<n-1; i++){
         if(arr[i] < p){
@@ -183,3 +194,4 @@ void quicksort(int* arr, int n){
     quicksort(arr, partition);
     quicksort(arr+(partition+1), n - (partition+1));
 }
+

@@ -18,13 +18,6 @@ int main() {
     auto start = std::chrono::high_resolution_clock::now();
     quicksort(arr, inputsize);
 
-    // selectionsort(arr, inputsize);
-    // insertionsort(arr,inputsize);
-    // mergesort(arr,0,inputsize-1);
-    // bubblesort(arr,inputsize);
-    // heapsort(arr,inputsize);
-    quicksort(arr,inputsize);
-
     auto end = std::chrono::high_resolution_clock::now();
 
     // 결과 출력 (모니터 프로그램에서 파싱)

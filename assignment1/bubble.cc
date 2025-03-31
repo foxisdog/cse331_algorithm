@@ -16,14 +16,7 @@ int main() {
 
     // 순수 정렬 시간 측정 시작
     auto start = std::chrono::high_resolution_clock::now();
-    quicksort(arr, inputsize);
-
-    // selectionsort(arr, inputsize);
-    // insertionsort(arr,inputsize);
-    // mergesort(arr,0,inputsize-1);
     bubblesort(arr,inputsize);
-    // heapsort(arr,inputsize);
-    // quicksort(arr,inputsize);
 
     auto end = std::chrono::high_resolution_clock::now();
 

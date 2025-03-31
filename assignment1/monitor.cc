@@ -92,7 +92,12 @@ void processInputFile(const std::string& program, const std::string& input_file,
 
     std::vector<RunResult> results;
 
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < 5; ++i) { // 예열
+        RunResult result{0.0, 0};
+        execute(program.c_str(), input_file.c_str(), result);
+    }
+
+    for (int i = 0; i < 10; ++i) {
         RunResult result{0.0, 0};
         execute(program.c_str(), input_file.c_str(), result);
         results.push_back(result);
@@ -106,6 +111,7 @@ void processInputFile(const std::string& program, const std::string& input_file,
                   << result.memory / (1024.0 * 1024.0) 
                   << " MB\n";
     }
+
 
     // Calculate and print statistics
     double total_time_ms = 0.0;

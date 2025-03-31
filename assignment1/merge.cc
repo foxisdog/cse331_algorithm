@@ -16,20 +16,17 @@ int main() {
 
     // 순수 정렬 시간 측정 시작
     auto start = std::chrono::high_resolution_clock::now();
-    quicksort(arr, inputsize);
-
-    // selectionsort(arr, inputsize);
-    // insertionsort(arr,inputsize);
     mergesort(arr,0,inputsize-1);
-    // bubblesort(arr,inputsize);
-    // heapsort(arr,inputsize);
-    // quicksort(arr,inputsize);
 
     auto end = std::chrono::high_resolution_clock::now();
 
     // 결과 출력 (모니터 프로그램에서 파싱)
     std::chrono::duration<double, std::milli> elapsed = end - start;
     std::cout << "SORT_TIME:" << elapsed.count() << " ms\n";
+    
+    // for(int i=0; i<inputsize; i++){
+    //     std::cout << arr[i] <<'\n';
+    // }
 
     return 0;
 }

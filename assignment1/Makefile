@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -Wall -g
-TARGETS = quick insert merge bubble heap select  # 6개 프로그램
+TARGETS = quick insert merge bubble heap select	tournament shaker comb intro library
 
 all: $(TARGETS)
 
@@ -21,6 +21,21 @@ heap: heap.o sort.o
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
 select: select.o sort.o
+	$(CXX) $(CXXFLAGS) $^ -o $@
+
+tournament: tournament.o sort.o
+	$(CXX) $(CXXFLAGS) $^ -o $@
+
+shaker: shaker.o sort.o
+	$(CXX) $(CXXFLAGS) $^ -o $@
+
+comb: comb.o sort.o
+	$(CXX) $(CXXFLAGS) $^ -o $@
+
+intro: intro.o sort.o
+	$(CXX) $(CXXFLAGS) $^ -o $@
+
+library: library.o sort.o
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
 # 오브젝트 파일 빌드 규칙

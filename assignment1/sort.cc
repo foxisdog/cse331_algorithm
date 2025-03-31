@@ -1,8 +1,13 @@
 #include "sort.h"
+
+#include <vector>
 #include <random>
 #include <algorithm>
 #include <iostream>
 #include <stdlib.h> 
+#include <stack>
+
+using namespace std;
 
 
 void insertionsort(int* arr, int n){
@@ -493,100 +498,133 @@ void library(int* arr, int n){
 
 
 
-// void merge(int* arr, int l, int m, int r){
-//     int p1=l;
-//     int p2=m+1;
-//     int p3=l;
-//     int sorted[MAXSIZE];
+// void binaryinsert(int* arr, int start, int end, bool ascending){
+//     if(start>=end) return;
+//     int ub = end-1; // 넣고 싶은 원소는 end 에있고 상한은 end -1
+//     int lb = start;
+//     int mid=(ub+lb)/2;
+//     int key = arr[end];
 
-//     while( p1 != m+1 && p2 != r+1){
-//         if( arr[p1] > arr[p2] ){
-//             sorted[ p3 ] = arr[p2];
-//             p2++;
-//             p3++;
+//     while(lb<=ub){
+//         mid=(ub+lb)/2;
+//         if((ascending && arr[mid]> arr[end] ) || (!ascending && arr[mid]<arr[end])){
+//             ub = mid -1;
 //         }else{
-//             sorted[ p3 ] = arr[p1];
-//             p1++;
-//             p3++;
+//             lb=mid+1;
 //         }
 //     }
-
-//     while( p1 != m+1 ){
-//         sorted[ p3 ] = arr[p1];
-//         p1++;
-//         p3++;
+//     for (int i = end-1; i>=lb; i--){
+//         arr[i + 1] = arr[i];
 //     }
-//     while( p2 != r+1 ){
-//         sorted[ p3 ] = arr[p2];
-//         p2++;
-//         p3++;
-//     }
-
-//     for(int i=l; i<=r; i++){
-//         arr[i] = sorted[i];
-//     }
+//     arr[lb] = key;
 // }
 
+int  makerun(int* arr, int n, int start, int end){ //최소 minrun 만큼 run 을 만들고 더 가능하면 더 만듬 그리고 끝나는 위치 리턴
+    // int ub, lb;
+    // bool ascending;
+    // int prev;
+    // int cur;
+    // int tmp;
+    if(start>=end) return start;
+    // ascending = arr[start] < arr[start+1];
 
 
-void binaryinsert(int* arr, int start, int end, bool ascending){
-    if(start>=end) return;
-    int ub = end-1; // 넣고 싶은 원소는 end 에있고 상한은 end -1
-    int lb = start;
-    int mid=(ub+lb)/2;
-    int key = arr[end];
-
-    while(lb<=ub){
-        mid=(ub+lb)/2;
-        if((ascending && arr[mid]> arr[end] ) || (!ascending && arr[mid]<arr[end])){
-            ub = mid -1;
-        }else{
-            lb=mid+1;
-        }
+    // for(int i=1; i<=end; i++){
+    //     binaryinsert(arr,start,start+i,ascending);
+    // }
+    // if(!ascending){
+    //     for(int i=0; i<(end-start)/2 + 1; i++){
+    //         tmp = arr[end-i];
+    //         arr[end-i] = arr[start+i];
+    //         arr[start+i] = tmp;
+    //     }
+    // }
+    if(n - end +1 <= 64){
+        return n-1;
     }
-    for (int i = end-1; i>=lb; i--){
-        arr[i + 1] = arr[i];
-    }
-    arr[lb] = key;
+    return end;
 }
 
-void  makerun(int* arr, int start, int end){
-    int ub, lb;
-    bool ascending;
-    int prev;
-    int cur;
-    int tmp;
-    if(start>=end) return;
-    ascending = arr[start] < arr[start+1];
+int runsize(pair<int,int> run){
+    return run.second - run.first + 1;
+}
 
-
-    for(int i=1; i<=end; i++){
-        binaryinsert(arr,start,start+i,ascending);
-    }
-    if(!ascending){
-        for(int i=0; i<(end-start)/2 + 1; i++){
-            tmp = arr[end-i];
-            arr[end-i] = arr[start+i];
-            arr[start+i] = tmp;
-        }
-    }
+void mergerunvector(int* arr, vector<pair<int,int>> &runs, int index1, int index2){ //run1 run2 는 연속됨
+    mergesort(arr, runs[index1].first, runs[index2].second);
+    runs[index1].second = runs[index2].second;
+    runs.erase(runs.begin() + index2);
 }
 
 void timsort(int* arr, int n){
-    // https://www.perplexity.ai/search/timsort-seolmyeonghaejweo-1lIP4m6yTbGjWI2Okn1Tig
     //minirun 정하기
     int minirun = 64;
+    int runend;
+    bool is_violation = true; 
+    int runxsize;
+    int a,b,c;
+
+    vector<pair<int,int>> runs; // start end
 
     //run 만들기
-    for(int i=0; i<=log2(n); i++){
-        int runend = minirun*(i+1)-1 < n-1 ? minirun*(i+1)-1 : n-1;
-        makerun(arr, minirun*i,runend);
+    std::cout << "iteration start" << endl;
+    int i=0;
+
+    while(i<n-1){ //이전에 끝난 값이 마지막값보다 작아야함
+
+        runend = minirun + i < n-1 ? minirun + i : n-1;
+        i = makerun(arr, n, i, runend);
+        std::cout << "\n\nindex is " << i << endl;
+
+        if(runs.size() != 0){
+            runs.push_back( {runs.back().second + 1 , i });
+        }else{
+            runs.push_back( {0 , i });
+        }
+        std::cout << "push_back done" << endl;
+
+
+        // 벡터에 사이즈 기록 넣어놔야할듯함
+        // 3개 이상있을 때 런 합쳐야하는지 확인
+        is_violation = true;
+        while(is_violation){
+            is_violation = false;
+            if(runs.size() >= 3){
+                a = runsize(runs[runs.size() -1 ]);
+                b = runsize(runs[runs.size() -2 ]);
+                c = runsize(runs[runs.size() -3 ]);
+                cout << "a, b, c : " << a << ' ' << b << ' ' << c << endl;
+                if( a >= b or (a+b)>=c){
+                    cout << " a >= b or (a+b)>=c violation" << endl;
+                    is_violation = true;
+                    if( a>=c){
+                        mergerunvector(arr, runs, runs.size() -3, runs.size() -2);
+                        
+                    }else{
+                        //b 랑 c랑 병합
+                        mergerunvector(arr, runs, runs.size() -2, runs.size() -1);
+                        
+                    }
+                }
+            }else if(runs.size() == 2){
+                if( runsize(runs[1]) >= runsize(runs[0]) ){
+                    cout << " a >= b " << endl;
+                    is_violation = true;
+                    mergerunvector(arr, runs, 0, 1);
+                }
+            }
+        }
+        std::cout << "runs 최적화 완료" << endl;
+        std::cout << "runs size = " << runs.size() << endl;
+        for(auto j : runs){
+            cout << "runs scope : [" << j.first << ", " << j.second << "]" << "size : " << runsize(j) << endl;
+        }
+
+        i++;
     }
 
+    // 런 다 만들었고 합치면 끝.
     //merge
-    for(int i=n/minirun; i>=0; i++){
-        for(int j=0; j<i; j++){
-            merge(arr,j*minirun*i,j*minirun*(i-1),runend);
-        }
+    while(runs.size() != 1 ){
+        mergerunvector(arr,runs,runs.size() -2, runs.size()-1);
     }
 }

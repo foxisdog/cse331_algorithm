@@ -496,92 +496,330 @@ void library(int* arr, int n){
     free(is_gap);
 }
 
+// ----------------------------------------------------------------------------
 
+void is_sorted(int* arr, std::pair<int,int> run){
+    bool sorted=1;
 
-// void binaryinsert(int* arr, int start, int end, bool ascending){
-//     if(start>=end) return;
-//     int ub = end-1; // 넣고 싶은 원소는 end 에있고 상한은 end -1
-//     int lb = start;
-//     int mid=(ub+lb)/2;
-//     int key = arr[end];
-
-//     while(lb<=ub){
-//         mid=(ub+lb)/2;
-//         if((ascending && arr[mid]> arr[end] ) || (!ascending && arr[mid]<arr[end])){
-//             ub = mid -1;
-//         }else{
-//             lb=mid+1;
-//         }
-//     }
-//     for (int i = end-1; i>=lb; i--){
-//         arr[i + 1] = arr[i];
-//     }
-//     arr[lb] = key;
-// }
-
-int  makerun(int* arr, int n, int start, int end){ //최소 minrun 만큼 run 을 만들고 더 가능하면 더 만듬 그리고 끝나는 위치 리턴
-    // int ub, lb;
-    // bool ascending;
-    // int prev;
-    // int cur;
-    // int tmp;
-    if(start>=end) return start;
-    // ascending = arr[start] < arr[start+1];
-
-
-    // for(int i=1; i<=end; i++){
-    //     binaryinsert(arr,start,start+i,ascending);
-    // }
-    // if(!ascending){
-    //     for(int i=0; i<(end-start)/2 + 1; i++){
-    //         tmp = arr[end-i];
-    //         arr[end-i] = arr[start+i];
-    //         arr[start+i] = tmp;
-    //     }
-    // }
-    if(n - end +1 <= 64){
-        return n-1;
+    for(int i=run.first; i<=run.second-1; i++){
+        if(arr[i] > arr[i+1]){
+            std::cout << "not sorted" << endl;
+            std::cout << "at " << i << ' ' << i+1 << endl;
+            sorted = 0;
+        }
     }
-    return end;
+
+    if(!sorted){
+        for(int i=run.first; i<=run.second; i++){
+            std::cout << arr[i] <<"at i=" << i << endl;
+        }
+        std::cout << "-------------------------------\n\n";
+    }
+    std::cout << "new run is sorted" << endl;
+}
+
+void binaryinsert(int* arr, int start, int end, bool ascending){
+    if(start>=end) return;
+    int ub = end-1; // 넣고 싶은 원소는 end 에있고 상한은 end -1
+    int lb = start;
+    int mid=(ub+lb)/2;
+    int key = arr[end];
+
+    while(lb<=ub){
+        mid=(ub+lb)/2;
+        if((ascending && arr[mid] > key ) || (!ascending && arr[mid]< key)){
+            ub = mid -1;
+        }else{
+            lb=mid+1;
+        }
+    }
+    for (int i = end-1; i>=lb; i--){
+        arr[i + 1] = arr[i];
+    }
+    arr[lb] = key;
+}
+
+int makerun(int* arr, int n, int start, int end){ //최소 minrun 만큼 run 을 만들고 더 가능하면 더 만듬 그리고 끝나는 위치 리턴
+    bool ascending=1;
+    int tmp;
+    int runend = end;
+
+    if(end + 65 >= n-1){
+        runend = n-1;
+    }
+
+    ascending = arr[start] < arr[start+1];
+
+
+    for(int i=1; start+i<=runend; i++){
+        binaryinsert(arr,start,start+i,ascending);
+    }
+
+    while(1){
+        // cout << "extend run if possible" << endl;
+        // cout << "아직 끝에 도달 안했는지 확인" << endl;
+        if( runend + 1 <= n-1 ){
+            // cout << "아직 배열 끝 아님"<< endl;
+            if( ((arr[runend] <= arr[runend+1]) && ascending) || ((arr[runend] >= arr[runend+1]) && !ascending) ){
+                runend++;
+                // cout << " 1 개 추가"<< endl;
+            }else{
+                break;
+            }
+        }else{
+            break;
+        }
+    }
+
+    if (!ascending) {
+        int mid = (start + runend) / 2;
+        for (int i = start; i <= mid; i++) {
+            tmp = arr[i];
+            arr[i] = arr[runend-i+start];
+            arr[runend-i+start] = tmp;
+        }
+    }
+    
+    return runend;
 }
 
 int runsize(pair<int,int> run){
     return run.second - run.first + 1;
 }
 
+int bs(int* arr, int start, int end, int key){
+    int ub, lb, mid;
+    ub=end;
+    lb=start;
+    while(lb<=ub){
+        mid = (ub+lb)/2;
+        if(arr[mid] > key){
+            ub = mid-1;
+        }else{
+            lb = mid+1;
+        }
+    }
+    return lb;
+}
+int bsvector(vector<int> arr, int start, int end, int key){
+    int ub, lb, mid;
+    ub=end;
+    lb=start;
+    while(lb<=ub){
+        mid = (ub+lb)/2;
+        if(arr[mid] > key){
+            ub = mid-1;
+        }else{
+            lb = mid+1;
+        }
+    }
+    return lb;
+}
+
+
+void timmerge(int* arr, int l, int r, int end){ // arr, 왼쪽 시작, 오른쪽 시작 , 오른쪽 마지막
+    // 2run merge 로 째끼고
+    int lp;
+    int rp;
+    int lstart,lend;
+    int rstart,rend;
+    int lsize,rsize;
+    int inputindex;
+    int lgalloper =0;
+    int rgalloper =0;
+    int gallopend;
+    vector<int> tmpvector;
+    
+    lstart = bs(arr, l, r-1, arr[r]);
+    lend = r-1;
+    rstart = r;
+    rend = bs(arr, r, end, arr[r-1]) - 1;
+
+    lsize = lend - lstart + 1;
+    rsize = rend - rstart + 1;
+    
+    if( lsize > rsize){ // 왼쪽이 더 큰경우 -> 오른쪽 복사해서 오른쪽부터 채움 큰놈이 나와야함
+        lp = lend;
+        rp = rend;
+        inputindex = rend;
+
+        for(int i=0; i< rsize; i++){
+            tmpvector.push_back(arr[rstart + i]);
+        }
+        while( lp>=lstart && rp>=rstart){
+
+            if( rgalloper >= 3){
+                gallopend = max( rp-(1<<(rgalloper-3)), rstart);
+                if( tmpvector[ gallopend - rstart ]    >= arr[lp] ){ // 성공하면 galloper 1 증가
+                    while(rp - rstart >= gallopend){
+                        arr[inputindex] = tmpvector[rp-rstart];
+                        rp--;
+                        inputindex--;
+                    }
+                    rgalloper++;
+                }else{
+                    gallopend =  max( bsvector(tmpvector, gallopend-rstart, rp -rstart , arr[lp]) , rstart )   ;
+                    while(rp - rstart >= gallopend){
+                        arr[inputindex] = tmpvector[rp-rstart];
+                        rp--;
+                        inputindex--;
+                    }
+                    rgalloper=0;
+                }
+            }else if(lgalloper >= 3){
+                gallopend = max(  lp - (1<<(lgalloper-3)) , lstart  );
+                if( arr[gallopend] >= tmpvector[rp-rstart] ){
+                    while(lp>=gallopend){
+                        arr[inputindex] = arr[lp];
+                        lp--;
+                        inputindex--;
+                    }
+                    lgalloper++;
+                }else{
+                    gallopend = max(bs(arr, gallopend, lp, tmpvector[rp-rstart]) , lstart);
+                    while(lp>=gallopend){
+                        arr[inputindex] = arr[lp];
+                        lp--;
+                        inputindex--;
+                    }
+                    lgalloper = 0;
+                }
+            }else if( arr[lp] > tmpvector[rp - rstart]){ // galloper off
+                rgalloper=0;
+                lgalloper++;
+                arr[inputindex] = arr[lp];
+                lp--;
+                inputindex--;
+            }else{
+                lgalloper=0;
+                rgalloper++;
+                arr[inputindex] = tmpvector[rp-rstart];
+                rp--;
+                inputindex--;
+            }
+        }
+        //둘중 하나 끝에 도달
+        while(lp >= lstart){
+            arr[inputindex] = arr[lp];
+            lp--;
+            inputindex--;
+        }
+        while(rp >= rstart){
+            arr[inputindex] = tmpvector[rp - rstart];
+            rp--;
+            inputindex--;
+        }
+
+    }else{ // 오른쪽이 더 큰 경우 -> 왼쪽 복사 -> 왼쪽부터 채움 작은값 입력
+        lp = lstart;
+        rp = rstart;
+        inputindex = lstart;
+        for(int i=0; i< lsize; i++){
+            tmpvector.push_back(arr[lstart + i]);
+        }
+        while( lp <= lend && rp <= rend){
+            
+            if(lgalloper >=3){
+                gallopend = min( lp + (1<<(lgalloper-3)) , lend);
+                if( tmpvector[gallopend - lstart] <= arr[rp]){
+                    while(lp<=gallopend){
+                        arr[inputindex]=tmpvector[lp-lstart];
+                        lp++;
+                        inputindex++;
+                    }
+                    lgalloper++;
+                }else{
+                    gallopend = min( bsvector(tmpvector, lp - lstart, gallopend - lstart, arr[rp]) - 1, lend );
+                    while(lp<=gallopend){
+                        arr[inputindex]=tmpvector[lp-lstart];
+                        lp++;
+                        inputindex++;
+                    }
+                    lgalloper = 0;
+                }
+
+            }else if(rgalloper >= 3){
+                gallopend = min( rp + (1<<(lgalloper-3)), rend);
+                if( arr[ gallopend ] <= arr[lp] ){
+                    while(rp<=gallopend){
+                        arr[inputindex] = arr[rp];
+                        rp++;
+                        inputindex++;
+                    }
+                    rgalloper++;
+                }else{
+                    gallopend = min( bs(arr,rp, gallopend, tmpvector[rp-rstart] ), lend);
+                    while(rp<=gallopend){
+                        arr[inputindex] = arr[rp];
+                        rp++;
+                        inputindex++;
+                    }
+                    rgalloper=0;
+                }
+            }else if( tmpvector[lp-lstart] > arr[rp] ){ //gallop off
+                arr[inputindex] = arr[rp];
+                rgalloper++;
+                lgalloper=0;
+                rp++;
+                inputindex++;
+            }else{
+                arr[inputindex] = tmpvector[lp-lstart];
+                lp++;
+                inputindex++;
+                lgalloper++;
+                rgalloper=0;
+            }
+        }
+
+        while(lp <= lend){
+            arr[inputindex] = tmpvector[lp-lstart];
+            lp++;
+            inputindex++;
+        }
+        while(rp <= rend){
+            arr[inputindex] = arr[rp];
+            rp++;
+            inputindex++;
+        }
+    }
+}
+
 void mergerunvector(int* arr, vector<pair<int,int>> &runs, int index1, int index2){ //run1 run2 는 연속됨
-    mergesort(arr, runs[index1].first, runs[index2].second);
+    // mergesort(arr, runs[index1].first, runs[index2].second);
+    // merge(arr,runs[index1].first, runs[index2].first-1,runs[index2].second);
+    timmerge(arr,runs[index1].first, runs[index2].first,runs[index2].second);
     runs[index1].second = runs[index2].second;
     runs.erase(runs.begin() + index2);
+    // cout << "merge done\n";
+    // is_sorted(arr,{index1,index2});
 }
 
 void timsort(int* arr, int n){
     //minirun 정하기
-    int minirun = 64;
+    int minirun = 32;
     int runend;
     bool is_violation = true; 
-    int runxsize;
     int a,b,c;
 
     vector<pair<int,int>> runs; // start end
 
     //run 만들기
-    std::cout << "iteration start" << endl;
+    // std::cout << "iteration start" << endl;
     int i=0;
 
     while(i<n-1){ //이전에 끝난 값이 마지막값보다 작아야함
 
         runend = minirun + i < n-1 ? minirun + i : n-1;
         i = makerun(arr, n, i, runend);
-        std::cout << "\n\nindex is " << i << endl;
+        // std::cout << "\n\nindex is " << i << endl;
 
         if(runs.size() != 0){
             runs.push_back( {runs.back().second + 1 , i });
         }else{
             runs.push_back( {0 , i });
         }
-        std::cout << "push_back done" << endl;
-
+        // is_sorted(arr, runs[runs.size() -1]);
+        // std::cout << "push_back done" << endl;
 
         // 벡터에 사이즈 기록 넣어놔야할듯함
         // 3개 이상있을 때 런 합쳐야하는지 확인
@@ -592,13 +830,11 @@ void timsort(int* arr, int n){
                 a = runsize(runs[runs.size() -1 ]);
                 b = runsize(runs[runs.size() -2 ]);
                 c = runsize(runs[runs.size() -3 ]);
-                cout << "a, b, c : " << a << ' ' << b << ' ' << c << endl;
                 if( a >= b or (a+b)>=c){
-                    cout << " a >= b or (a+b)>=c violation" << endl;
+                    // cout << " a >= b or (a+b)>=c violation" << endl;
                     is_violation = true;
                     if( a>=c){
                         mergerunvector(arr, runs, runs.size() -3, runs.size() -2);
-                        
                     }else{
                         //b 랑 c랑 병합
                         mergerunvector(arr, runs, runs.size() -2, runs.size() -1);
@@ -607,17 +843,17 @@ void timsort(int* arr, int n){
                 }
             }else if(runs.size() == 2){
                 if( runsize(runs[1]) >= runsize(runs[0]) ){
-                    cout << " a >= b " << endl;
+                    // cout << " a >= b " << endl;
                     is_violation = true;
                     mergerunvector(arr, runs, 0, 1);
                 }
             }
         }
-        std::cout << "runs 최적화 완료" << endl;
-        std::cout << "runs size = " << runs.size() << endl;
-        for(auto j : runs){
-            cout << "runs scope : [" << j.first << ", " << j.second << "]" << "size : " << runsize(j) << endl;
-        }
+
+        // std::cout << "runs size = " << runs.size() << endl;
+        // for(auto j : runs){
+            // cout << "runs scope : [" << j.first << ", " << j.second << "]" << "size : " << runsize(j) << endl;
+        // }
 
         i++;
     }

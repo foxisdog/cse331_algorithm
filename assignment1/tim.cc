@@ -23,9 +23,9 @@ int main() {
     std::chrono::duration<double, std::milli> elapsed = end - start;
     std::cout << "SORT_TIME:" << elapsed.count() << " ms\n";
 
-    for(int i=0; i<inputsize; i++){
-        std::cout << arr[i] <<'\n';
-    }
+    // for(int i=0; i<inputsize; i++){
+    //     std::cout << arr[i] <<'\n';
+    // }
 
     return 0;
 }

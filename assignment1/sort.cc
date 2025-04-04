@@ -56,34 +56,35 @@ void merge(int* arr, int l, int m, int r){
     int p1=l;
     int p2=m+1;
     int p3=l;
-    int sorted[MAXSIZE];
-
+    // int sorted[MAXSIZE];
+    int* sorted = (int*)malloc(sizeof(int) * (r-l+1));
     while( p1 != m+1 && p2 != r+1){
         if( arr[p1] > arr[p2] ){
-            sorted[ p3 ] = arr[p2];
+            sorted[ p3 -l ] = arr[p2];
             p2++;
             p3++;
         }else{
-            sorted[ p3 ] = arr[p1];
+            sorted[ p3 -l] = arr[p1];
             p1++;
             p3++;
         }
     }
 
     while( p1 != m+1 ){
-        sorted[ p3 ] = arr[p1];
+        sorted[ p3 -l] = arr[p1];
         p1++;
         p3++;
     }
     while( p2 != r+1 ){
-        sorted[ p3 ] = arr[p2];
+        sorted[ p3 -l] = arr[p2];
         p2++;
         p3++;
     }
 
     for(int i=l; i<=r; i++){
-        arr[i] = sorted[i];
+        arr[i] = sorted[i-l];
     }
+    free(sorted);
 }
 
 void mergesort(int* arr, int l, int r){
@@ -205,7 +206,6 @@ void quicksort(int* arr, int n){
 }
 
 void tournament(int* arr, int n){
-
     int size=1;
     while( size < n){
         size = size*2;
@@ -213,7 +213,8 @@ void tournament(int* arr, int n){
 
     int cur;
     int left,right;
-    int tree[2*size]; //1부터 시작
+    int* tree = (int*)malloc(sizeof(int) * size*2);
+    // int tree[2*size]; //1부터 시작
     for(int i=0; i<n; i++){
         tree[size+i] = arr[i];
     } // 리프노드에 박음
@@ -249,6 +250,7 @@ void tournament(int* arr, int n){
             tree[cur] = tree[2*cur] < tree[2*cur+1] ? tree[2*cur] : tree[2*cur + 1];//토너먼트 결과 보기
         }
     }
+    free(tree);
 }
 
 void shaker(int* arr, int n){
@@ -617,6 +619,174 @@ int bsvector(vector<int> arr, int start, int end, int key){
 }
 
 
+// void timmerge(int* arr, int l, int r, int end){ // arr, 왼쪽 시작, 오른쪽 시작 , 오른쪽 마지막
+//     // 2run merge 로 째끼고
+//     int lp;
+//     int rp;
+//     int lstart,lend;
+//     int rstart,rend;
+//     int lsize,rsize;
+//     int inputindex;
+//     int lgalloper =0;
+//     int rgalloper =0;
+//     int gallopend;
+//     vector<int> tmpvector;
+    
+//     lstart = bs(arr, l, r-1, arr[r]);
+//     lend = r-1;
+//     rstart = r;
+//     rend = bs(arr, r, end, arr[r-1]) - 1;
+
+//     lsize = lend - lstart + 1;
+//     rsize = rend - rstart + 1;
+    
+//     if( lsize > rsize){ // 왼쪽이 더 큰경우 -> 오른쪽 복사해서 오른쪽부터 채움 큰놈이 나와야함
+//         lp = lend;
+//         rp = rend;
+//         inputindex = rend;
+
+//         for(int i=0; i< rsize; i++){
+//             tmpvector.push_back(arr[rstart + i]);
+//         }
+//         while( lp>=lstart && rp>=rstart){
+
+//             if( rgalloper >= 3){
+//                 gallopend = max( rp-(1<<(rgalloper-3)), rstart);
+//                 if( tmpvector[ gallopend - rstart ] >= arr[lp] ){ // 성공하면 galloper 1 증가
+//                     while(rp - rstart >= gallopend){
+//                         arr[inputindex] = tmpvector[rp-rstart];
+//                         rp--;
+//                         inputindex--;
+//                     }
+//                     rgalloper++;
+//                 }else{
+//                     gallopend =  max( bsvector(tmpvector, gallopend-rstart, rp -rstart , arr[lp]) , rstart )   ;
+//                     while(rp - rstart >= gallopend){
+//                         arr[inputindex] = tmpvector[rp-rstart];
+//                         rp--;
+//                         inputindex--;
+//                     }
+//                     rgalloper=0;
+//                 }
+//             }else if(lgalloper >= 3){
+//                 gallopend = max(  lp - (1<<(lgalloper-3)) , lstart  );
+//                 if( arr[gallopend] >= tmpvector[rp-rstart] ){
+//                     while(lp>=gallopend){
+//                         arr[inputindex] = arr[lp];
+//                         lp--;
+//                         inputindex--;
+//                     }
+//                     lgalloper++;
+//                 }else{
+//                     gallopend = max(bs(arr, gallopend, lp, tmpvector[rp-rstart]) , lstart);
+//                     while(lp>=gallopend){
+//                         arr[inputindex] = arr[lp];
+//                         lp--;
+//                         inputindex--;
+//                     }
+//                     lgalloper = 0;
+//                 }
+//             }else if( arr[lp] > tmpvector[rp - rstart]){ // galloper off
+//                 rgalloper=0;
+//                 lgalloper++;
+//                 arr[inputindex] = arr[lp];
+//                 lp--;
+//                 inputindex--;
+//             }else{
+//                 lgalloper=0;
+//                 rgalloper++;
+//                 arr[inputindex] = tmpvector[rp-rstart];
+//                 rp--;
+//                 inputindex--;
+//             }
+//         }
+//         //둘중 하나 끝에 도달
+//         while(lp >= lstart){
+//             arr[inputindex] = arr[lp];
+//             lp--;
+//             inputindex--;
+//         }
+//         while(rp >= rstart){
+//             arr[inputindex] = tmpvector[rp - rstart];
+//             rp--;
+//             inputindex--;
+//         }
+
+//     }else{ // 오른쪽이 더 큰 경우 -> 왼쪽 복사 -> 왼쪽부터 채움 작은값 입력
+//         lp = lstart;
+//         rp = rstart;
+//         inputindex = lstart;
+//         for(int i=0; i< lsize; i++){
+//             tmpvector.push_back(arr[lstart + i]);
+//         }
+//         while( lp <= lend && rp <= rend){
+            
+//             if(lgalloper >=3){
+//                 gallopend = min( lp + (1<<(lgalloper-3)) , lend);
+//                 if( tmpvector[gallopend - lstart] <= arr[rp]){
+//                     while(lp<=gallopend){
+//                         arr[inputindex]=tmpvector[lp-lstart];
+//                         lp++;
+//                         inputindex++;
+//                     }
+//                     lgalloper++;
+//                 }else{
+//                     gallopend = min( bsvector(tmpvector, lp - lstart, gallopend - lstart, arr[rp]) - 1, lend );
+//                     while(lp<=gallopend){
+//                         arr[inputindex]=tmpvector[lp-lstart];
+//                         lp++;
+//                         inputindex++;
+//                     }
+//                     lgalloper = 0;
+//                 }
+
+//             }else if(rgalloper >= 3){
+//                 gallopend = min( rp + (1<<(lgalloper-3)), rend);
+//                 if( arr[ gallopend ] <= arr[lp] ){
+//                     while(rp<=gallopend){
+//                         arr[inputindex] = arr[rp];
+//                         rp++;
+//                         inputindex++;
+//                     }
+//                     rgalloper++;
+//                 }else{
+//                     gallopend = min( bs(arr,rp, gallopend, tmpvector[rp-rstart] ), lend);
+//                     while(rp<=gallopend){
+//                         arr[inputindex] = arr[rp];
+//                         rp++;
+//                         inputindex++;
+//                     }
+//                     rgalloper=0;
+//                 }
+//             }else if( tmpvector[lp-lstart] > arr[rp] ){ //gallop off
+//                 arr[inputindex] = arr[rp];
+//                 rgalloper++;
+//                 lgalloper=0;
+//                 rp++;
+//                 inputindex++;
+//             }else{
+//                 arr[inputindex] = tmpvector[lp-lstart];
+//                 lp++;
+//                 inputindex++;
+//                 lgalloper++;
+//                 rgalloper=0;
+//             }
+//         }
+
+//         while(lp <= lend){
+//             arr[inputindex] = tmpvector[lp-lstart];
+//             lp++;
+//             inputindex++;
+//         }
+//         while(rp <= rend){
+//             arr[inputindex] = arr[rp];
+//             rp++;
+//             inputindex++;
+//         }
+//     }
+// }
+
+
 void timmerge(int* arr, int l, int r, int end){ // arr, 왼쪽 시작, 오른쪽 시작 , 오른쪽 마지막
     // 2run merge 로 째끼고
     int lp;
@@ -637,20 +807,23 @@ void timmerge(int* arr, int l, int r, int end){ // arr, 왼쪽 시작, 오른쪽
 
     lsize = lend - lstart + 1;
     rsize = rend - rstart + 1;
+    bool is_l_bigger = lsize > rsize;
     
-    if( lsize > rsize){ // 왼쪽이 더 큰경우 -> 오른쪽 복사해서 오른쪽부터 채움 큰놈이 나와야함
+    if( is_l_bigger ){ // 왼쪽이 더 큰경우 -> 오른쪽 복사해서 오른쪽부터 채움 큰놈이 나와야함
         lp = lend;
         rp = rend;
         inputindex = rend;
 
+        int* tmpvector = (int*)malloc(sizeof(int) * rsize);
         for(int i=0; i< rsize; i++){
-            tmpvector.push_back(arr[rstart + i]);
+            tmpvector[i] = arr[rstart + i];
         }
+
         while( lp>=lstart && rp>=rstart){
 
             if( rgalloper >= 3){
                 gallopend = max( rp-(1<<(rgalloper-3)), rstart);
-                if( tmpvector[ gallopend - rstart ]    >= arr[lp] ){ // 성공하면 galloper 1 증가
+                if( tmpvector[ gallopend - rstart ] >= arr[lp] ){ // 성공하면 galloper 1 증가
                     while(rp - rstart >= gallopend){
                         arr[inputindex] = tmpvector[rp-rstart];
                         rp--;
@@ -658,7 +831,7 @@ void timmerge(int* arr, int l, int r, int end){ // arr, 왼쪽 시작, 오른쪽
                     }
                     rgalloper++;
                 }else{
-                    gallopend =  max( bsvector(tmpvector, gallopend-rstart, rp -rstart , arr[lp]) , rstart )   ;
+                    gallopend =  max( bs(tmpvector, gallopend-rstart, rp -rstart , arr[lp]) , rstart )   ;
                     while(rp - rstart >= gallopend){
                         arr[inputindex] = tmpvector[rp-rstart];
                         rp--;
@@ -709,14 +882,18 @@ void timmerge(int* arr, int l, int r, int end){ // arr, 왼쪽 시작, 오른쪽
             rp--;
             inputindex--;
         }
+        free(tmpvector);
 
     }else{ // 오른쪽이 더 큰 경우 -> 왼쪽 복사 -> 왼쪽부터 채움 작은값 입력
         lp = lstart;
         rp = rstart;
         inputindex = lstart;
+        
+        int* tmpvector = (int*)malloc(sizeof(int) * lsize);
         for(int i=0; i< lsize; i++){
-            tmpvector.push_back(arr[lstart + i]);
+            tmpvector[i] = arr[lstart + i];
         }
+
         while( lp <= lend && rp <= rend){
             
             if(lgalloper >=3){
@@ -729,7 +906,7 @@ void timmerge(int* arr, int l, int r, int end){ // arr, 왼쪽 시작, 오른쪽
                     }
                     lgalloper++;
                 }else{
-                    gallopend = min( bsvector(tmpvector, lp - lstart, gallopend - lstart, arr[rp]) - 1, lend );
+                    gallopend = min( bs(tmpvector, lp - lstart, gallopend - lstart, arr[rp]) - 1, lend );
                     while(lp<=gallopend){
                         arr[inputindex]=tmpvector[lp-lstart];
                         lp++;
@@ -781,8 +958,10 @@ void timmerge(int* arr, int l, int r, int end){ // arr, 왼쪽 시작, 오른쪽
             rp++;
             inputindex++;
         }
+        free(tmpvector);
     }
 }
+
 
 void mergerunvector(int* arr, vector<pair<int,int>> &runs, int index1, int index2){ //run1 run2 는 연속됨
     // mergesort(arr, runs[index1].first, runs[index2].second);

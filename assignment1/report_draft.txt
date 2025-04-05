@@ -1,0 +1,60 @@
+\section{PROBLEM STATEMENT}
+\section{BASIC SORTING ALGORITHMS}
+\subsection{Bubble Sort}
+\subsubsection{original bubble sort}
+버블소트는 가장 직관적인 알고리즘이다.
+배열을 순회하며, 다음 원소와 현재 원소를 비교한다.
+만약 다음 원소가 더 작다면, 두 원소의 위치를 바꾼다.
+이 알고리즘은 배열을 1번 탐색할 떄, 가장 큰 원소를 오른쪽 끝에 위치하게한다.
+떄문에 총 비교 회수는 n-1 + n-2 + ... + 1 = n(n-1)/2 번으로
+시간복잡도 는 n2 이다.
+\subsubsection{optimized bubble sort}
+모든 원소가 정렬 되어있다면, 더이상 비교할 필요가 없다.
+배열 이 정렬되기 위해, 이번 탐색에 교환이 일어났는지를 확인하는 is_swap 불리언 변수를 이용한다.
+교환이 일어나지 않았다면 배열이 정렬됨을 의미한다.
+is_swap 은 false 값을 가지고, 정렬이 종료된다.
+이 보고서에서 bubble sort는 이 최적화를 이용한 알고리즘을 의미한다.
+이 경우 시간 복잡도는 최악 평균 은 n2으로 최적화 하지 않은 경우와 같지만.
+모든 배열이 정렬 된 경우 최선의 시간복잡도를 가진다.
+이 경우 1번의 순회에 정렬이 종료되어, 시간복잡도는 O(n) 이다.
+
+이 알고리즘은 구현이 단순하고 직관적이다. 또한 공간복잡도는 O(n) 으로 in-place 하고 stable 한 정렬 알고리즘이다.
+
+하지만, 시간복잡도가 최악 n2, 기대값이 n2 으로 정렬해야하는 원소 수 가 많아지면, 성능이 떨어질 수 있다. 또한, 불필요한 교환이 일어난다.
+\subsection{Selection Sort}
+알고리즘 설명
+장점: 메모리는 적게쓴다.
+단점: 항상 n2 만큼 걸려.
+
+\subsection{Insertion Sort}
+online algorithm
+in-place algorithm
+새로운 원소를 받았을 떄, O(n) 에 정렬가능
+
+\subsubsection{binary search}
+\subsection{Merge Sort}
+분할 정복 패러다임을 이용한다. theta(nlogn) 만큼 걸림
+재귀적인 동작방식
+not inplace -> n 개 정렬하는데 n개의 원소를 저장하는 추가적인 공간이 필요함.
+locality 괜춘혀만족
+stable 함
+재귀와 locality 땜에 오버헤드가 크다. 떄문에 어떤 작은 입력크기 n 이하에서는 위의 정렬이 더 빠른 구간이 생김.
+공간복잡도 n
+
+
+
+
+
+
+
+\subsection{Heap Sort}
+추가적인 공간이 필요하지 않음.
+\subsection{quick Sort}
+\section{ADVANCED SORTING ALGORITHMS}
+\subsection{Library Sort}
+\subsection{Comb Sort}
+\subsection{Cocktail Shaker Sort}
+\subsection{Introsort}
+\subsection{Tournament Sort}
+\subsection{Tim Sort}
+\section{EXPERIMENTAL RESULTS AND ANALYSIS}

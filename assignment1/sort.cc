@@ -177,14 +177,15 @@ void heapsort(int* arr, int n){
     }
 }
 
-void quicksort(int* arr, int n){
+void quicksort(int* arr, int n, std::mt19937 gen){
     if(n<=1) return;
     int tmp;
     
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    // std::random_device rd;
+    // std::mt19937 gen(rd());
     std::uniform_int_distribution<> dist(0, n-1);
     int pindex = dist(gen);
+    cout << "random value is " << pindex << endl;
 
     tmp = arr[n-1];
     arr[n-1] = arr[pindex];
@@ -203,8 +204,8 @@ void quicksort(int* arr, int n){
     }
     arr[n-1] = arr[partition];
     arr[partition] = p;
-    quicksort(arr, partition);
-    quicksort(arr+(partition+1), n - (partition+1));
+    quicksort(arr, partition,gen);
+    quicksort(arr+(partition+1), n - (partition+1),gen);
 }
 
 void tournament(int* arr, int n){
@@ -322,7 +323,7 @@ void comb(int* arr, int n){
     }
 }
 
-void intro(int* arr, int n, int max_depth, int threshold, int recur){
+void intro(int* arr, int n, int max_depth, int threshold, int recur,std::mt19937 gen){
     if(n<=1) return;
     if( recur >= max_depth){
         heapsort(arr,n);
@@ -336,8 +337,8 @@ void intro(int* arr, int n, int max_depth, int threshold, int recur){
     // quick sort
     
     int tmp;
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    // std::random_device rd;
+    // std::mt19937 gen(rd());
     std::uniform_int_distribution<> dist(0, n-1);
     int pindex = dist(gen);
     tmp = arr[n-1];
@@ -357,8 +358,8 @@ void intro(int* arr, int n, int max_depth, int threshold, int recur){
     }
     arr[n-1] = arr[partition];
     arr[partition] = p;
-    intro(arr, partition, max_depth, threshold, recur+1);
-    intro(arr+(partition+1), n - (partition+1), max_depth, threshold, recur+1);
+    intro(arr, partition, max_depth, threshold, recur+1,gen);
+    intro(arr+(partition+1), n - (partition+1), max_depth, threshold, recur+1,gen);
 
 }
 

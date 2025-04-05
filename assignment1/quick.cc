@@ -2,6 +2,8 @@
 #include <chrono>
 #include "sort.h"
 
+#include <random>
+
 using namespace std;
 
 int main() {
@@ -13,10 +15,12 @@ int main() {
     for(int i=0; i<inputsize; i++){
         cin >> arr[i];
     }
+    std::random_device rd;
+    std::mt19937 gen(rd());
 
     // 순수 정렬 시간 측정 시작
     auto start = std::chrono::steady_clock::now();
-    quicksort(arr, inputsize);
+    quicksort(arr, inputsize,gen);
 
     auto end = std::chrono::steady_clock::now();
 

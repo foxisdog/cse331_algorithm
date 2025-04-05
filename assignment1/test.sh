@@ -11,15 +11,16 @@
 # ./monitor ./shaker ./testfiles/*.txt
 # ./monitor ./tim ./testfiles/*.txt
 
-./monitor ./heap ./partial_0.75/*.txt
-./monitor ./merge ./partial_0.75/*.txt
-./monitor ./quick ./partial_0.75/*.txt
-./monitor ./insert ./partial_0.75/*.txt
-./monitor ./select ./partial_0.75/*.txt
-./monitor ./bubble ./partial_0.75/*.txt
-./monitor ./tournament ./partial_0.75/*.txt
-./monitor ./intro ./partial_0.75/*.txt
-./monitor ./comb ./partial_0.75/*.txt
-./monitor ./library ./partial_0.75/*.txt
-./monitor ./shaker ./partial_0.75/*.txt
-./monitor ./tim ./partial_0.75/*.txt
+# ./monitor ./heap ./partial/*.txt
+# ./monitor ./merge ./partial/*.txt
+# ./monitor ./quick ./partial/*.txt
+# ./monitor ./tournament ./partial/*.txt
+# ./monitor ./intro ./partial/*.txt
+# ./monitor ./comb ./partial/*.txt
+# ./monitor ./tim ./partial/*.txt
+
+./monitor ./bubble ./partial/partial_0.5*.txt
+./monitor ./insert ./partial/partial_0.5*.txt
+./monitor ./select ./partial/partial_0.5*.txt
+./monitor ./library ./partial/partial_0.5*.txt
+./monitor ./shaker ./partial/partial_0.5*.txt

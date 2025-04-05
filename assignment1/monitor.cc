@@ -92,7 +92,7 @@ void processInputFile(const std::string& program, const std::string& input_file,
 
     std::vector<RunResult> results;
 
-    for (int i = 0; i < 5; ++i) { // 예열
+    for (int i = 0; i < 1; ++i) { // 예열
         RunResult result{0.0, 0};
         execute(program.c_str(), input_file.c_str(), result);
     }

@@ -180,10 +180,12 @@ void heapsort(int* arr, int n){
 void quicksort(int* arr, int n){
     if(n<=1) return;
     int tmp;
+    
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dist(0, n-1);
     int pindex = dist(gen);
+
     tmp = arr[n-1];
     arr[n-1] = arr[pindex];
     arr[pindex] = tmp;

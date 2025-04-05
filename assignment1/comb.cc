@@ -15,10 +15,10 @@ int main() {
     }
 
     // 순수 정렬 시간 측정 시작
-    auto start = std::chrono::high_resolution_clock::now();
+    auto start = std::chrono::steady_clock::now();
     comb(arr,inputsize);
 
-    auto end = std::chrono::high_resolution_clock::now();
+    auto end = std::chrono::steady_clock::now();
 
     // 결과 출력 (모니터 프로그램에서 파싱)
     std::chrono::duration<double, std::milli> elapsed = end - start;

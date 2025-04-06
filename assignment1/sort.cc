@@ -185,7 +185,7 @@ void quicksort(int* arr, int n, std::mt19937 gen){
     // std::mt19937 gen(rd());
     std::uniform_int_distribution<> dist(0, n-1);
     int pindex = dist(gen);
-    cout << "random value is " << pindex << endl;
+    // cout << "random value is " << pindex << endl;
 
     tmp = arr[n-1];
     arr[n-1] = arr[pindex];

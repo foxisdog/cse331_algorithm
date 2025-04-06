@@ -918,7 +918,7 @@ void timmerge(int* arr, int l, int r, int end){ // arr, 왼쪽 시작, 오른쪽
                 }
 
             }else if(rgalloper >= 3){
-                gallopend = min( rp + (1<<(lgalloper-3)), rend);
+                gallopend = min( rp + (1<<(rgalloper-3)), rend);
                 if( arr[ gallopend ] <= arr[lp] ){
                     while(rp<=gallopend){
                         arr[inputindex] = arr[rp];

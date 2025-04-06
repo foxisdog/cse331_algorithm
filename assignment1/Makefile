@@ -1,6 +1,6 @@
 CXX = g++
-CXXFLAGS = -Wall -g
-TARGETS = quick insert merge bubble heap select	tournament shaker comb intro library tim
+CXXFLAGS = -Wall -g -std=c++17
+TARGETS = quick insert merge bubble heap select	tournament shaker comb intro library tim monitor
 
 all: $(TARGETS)
 
@@ -41,6 +41,8 @@ library: library.o sort.o
 tim: tim.o sort.o
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
+monitor:
+	$(CXX) $(CXXFLAGS) monitor.cc -o $@
 # 오브젝트 파일 빌드 규칙
 %.o: %.cc sort.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@

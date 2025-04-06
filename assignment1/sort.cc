@@ -801,7 +801,6 @@ void timmerge(int* arr, int l, int r, int end){ // arr, 왼쪽 시작, 오른쪽
     int lgalloper =0;
     int rgalloper =0;
     int gallopend;
-    vector<int> tmpvector;
     
     lstart = bs(arr, l, r-1, arr[r]);
     lend = r-1;
@@ -928,7 +927,7 @@ void timmerge(int* arr, int l, int r, int end){ // arr, 왼쪽 시작, 오른쪽
                     }
                     rgalloper++;
                 }else{
-                    gallopend = min( bs(arr,rp, gallopend, tmpvector[rp-rstart] ), lend);
+                    gallopend = min( bs(arr,rp, gallopend, tmpvector[lp-lstart] ), lend);
                     while(rp<=gallopend){
                         arr[inputindex] = arr[rp];
                         rp++;

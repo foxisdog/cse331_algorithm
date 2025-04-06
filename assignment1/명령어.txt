@@ -1,0 +1,13 @@
+yes | sudo apt update && yes | sudo apt upgrade
+yes | sudo apt install zip g++ build-essential screen
+
+git clone https://github.com/foxisdog/cse331_algorithm.git
+cd cse331_algorithm/assignment1/
+make
+sudo chmod 777 *
+
+zip -r archive.zip folder1 folder2 folder3
+
+screen python example.py
+screen -ls  # 실행 중인 screen 세션 목록 확인
+screen -r [screen name]  # 특정 세션에 재접속

@@ -1,7 +1,7 @@
 import sys
 import random
 
-def generate_partially_sorted_array(size, shuffle_ratio=0.75):
+def generate_partially_sorted_array(size, shuffle_ratio=0.45):
     """
     부분적으로 정렬된 배열 생성
     :param size: 배열 크기
@@ -35,6 +35,7 @@ def main():
     
     try:
         size = int(sys.argv[1])
+        print(size,end=" ")
         if size <= 0:
             raise ValueError("size는 양수여야 합니다.")
         

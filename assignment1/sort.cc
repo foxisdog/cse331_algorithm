@@ -112,7 +112,7 @@ void bubblesort(int* arr, int n){
     }
 }
 
-void heapify(int* heap, int max_index, int current){
+void heapify(int* heap, int max_index, int current){ // max heap 을 만들어야함
     int left;
     int right;
     int cur = current;
@@ -122,8 +122,8 @@ void heapify(int* heap, int max_index, int current){
         if( 2*cur +1 <= max_index){ //오른쪽도 있나요?
             left = 2 * cur;
             right = 2 * cur + 1;
-            if( heap[left] < heap[right]){// 왼쪽이 더작음
-                if(heap[left] < heap[cur]){
+            if( heap[left] > heap[right]){// 왼쪽이 더 큼
+                if(heap[left] > heap[cur]){
                     tmp = heap[left];
                     heap[left] = heap[cur];
                     heap[cur] = tmp;
@@ -131,8 +131,8 @@ void heapify(int* heap, int max_index, int current){
                 }else{
                     break;
                 }
-            }else{//오른쪽이 더작음
-                if(heap[right] < heap[cur]){
+            }else{//오른쪽이 더 큼
+                if(heap[right] > heap[cur]){
                     tmp = heap[right];
                     heap[right] = heap[cur];
                     heap[cur] =tmp;
@@ -142,9 +142,9 @@ void heapify(int* heap, int max_index, int current){
                 }
             }
             
-        }else{
+        }else{ //왼쪽만 있음음
             left = 2 * cur;
-            if( heap[left] < heap[cur] ){
+            if( heap[left] > heap[cur] ){
                 tmp = heap[cur];
                 heap[cur] = heap[left];
                 heap[left] = tmp;
@@ -157,23 +157,20 @@ void heapify(int* heap, int max_index, int current){
 }
 
 void heapsort(int* arr, int n){
-    int* heap = arr - 1; // min heap
+    int* heap = arr - 1; // min heap [1 - n] 까지
     for(int i= n/2; i>=1; i--){
         heapify(heap, n, i);
     }
     // build heap done
-    int sorted[MAXSIZE];
+    int tmp;
 
     int i=n; // 가지고 있는 원소 개수 i
     while( i >= 1){
-        sorted[n-i] = heap[1];
-        heap[1] = heap[i];
+        tmp = heap[i];
+        heap[i] = heap[1];
+        heap[1] = tmp;
         i--;
         heapify(heap,i,1);
-    }
-
-    for(int i=0; i<n; i++){
-        arr[i] = sorted[i];
     }
 }
 
@@ -502,6 +499,13 @@ void library(int* arr, int n){
 }
 
 // ----------------------------------------------------------------------------
+
+bool is_sorted(int* arr, int n){
+    for(int i=0; i<n-1; i++){
+        if(arr[i] > arr[i+1]) return false;
+    }
+    return true;
+}
 
 void is_sorted(int* arr, std::pair<int,int> run){
     bool sorted=1;

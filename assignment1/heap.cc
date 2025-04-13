@@ -22,8 +22,15 @@ int main() {
 
     // 결과 출력 (모니터 프로그램에서 파싱)
     std::chrono::duration<double, std::milli> elapsed = end - start;
-    std::cout << "SORT_TIME:" << elapsed.count() << " ms\n";
+    
 
+    bool sorted = is_sorted(arr,inputsize);
+    if(!sorted){
+        std::cout << "SORT_TIME:" << -9999 << " ms\n";
+    }else{
+        std::cout << "SORT_TIME:" << elapsed.count() << " ms\n";
+    }
+    
     // for(int i=0; i<inputsize; i++){
     //     std::cout << arr[i] <<'\n';
     // }

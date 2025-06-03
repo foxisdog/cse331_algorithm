@@ -1,0 +1,4 @@
+dataset,num_nodes,execution_time_sec,total_distance,tour_length,algorithm
+a280,280,0.06251,3858.168518,280,2-approximation
+kz9976,9976,371.269452,1454827.700477,9976,2-approximation
+xql662,662,0.671127,3687.174651,662,2-approximation

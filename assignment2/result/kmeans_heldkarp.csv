@@ -1,0 +1,5 @@
+dataset,num_nodes,execution_time_sec,total_distance,nodes_in_tour,all_nodes_included
+a280,280,2.2182,2971.7401,280,True
+kz9976,9976,324.1331,1359537.8161,9976,True
+xql662,662,5.6015,3213.2524,662,True
+mona-lisa100K,100000,27152.4697,6300574.1955,100000,True

@@ -128,9 +128,14 @@ if __name__ == "__main__":
     if args.output_file:
         output_filename = args.output_file
     else:
-        # 입력 파일명 기반으로 출력 파일명 생성 (예: a280.csv -> a280_output.csv)
+        # 기본 산출물은 result/ 아래로 모아 저장한다.
         base, ext = os.path.splitext(os.path.basename(args.input_file))
-        output_filename = f"{base}_2app_output.csv"
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        output_filename = os.path.join(script_dir, "result", f"{base}_2app_output.csv")
+
+    output_dir = os.path.dirname(output_filename)
+    if output_dir:
+        os.makedirs(output_dir, exist_ok=True)
 
     results_df = pd.DataFrame({
         'input_file': [os.path.basename(args.input_file)],

@@ -146,7 +146,12 @@ if __name__ == "__main__":
         output_filename = args.output_file
     else:
         base, ext = os.path.splitext(os.path.basename(args.input_file))
-        output_filename = f"{base}_christofides_output.csv"
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        output_filename = os.path.join(script_dir, "result", f"{base}_christofides_output.csv")
+
+    output_dir = os.path.dirname(output_filename)
+    if output_dir:
+        os.makedirs(output_dir, exist_ok=True)
 
     results_df = pd.DataFrame({
         'input_file': [os.path.basename(args.input_file)],

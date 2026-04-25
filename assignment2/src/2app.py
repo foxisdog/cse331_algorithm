@@ -130,8 +130,8 @@ if __name__ == "__main__":
     else:
         # 기본 산출물은 result/ 아래로 모아 저장한다.
         base, ext = os.path.splitext(os.path.basename(args.input_file))
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        output_filename = os.path.join(script_dir, "result", f"{base}_2app_output.csv")
+        project_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        output_filename = os.path.join(project_dir, "result", f"{base}_2app_output.csv")
 
     output_dir = os.path.dirname(output_filename)
     if output_dir:

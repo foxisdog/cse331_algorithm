@@ -1,54 +1,28 @@
 CXX = g++
 CXXFLAGS = -Wall -g -std=c++17
-TARGETS = quick insert merge bubble heap select	tournament shaker comb intro library tim monitor
+
+SRC_DIR = src
+OBJ_DIR = build/obj
+BIN_DIR = bin
+
+PROGRAMS = quick insert merge bubble heap select tournament shaker comb intro library tim
+TARGETS = $(addprefix $(BIN_DIR)/,$(PROGRAMS)) $(BIN_DIR)/monitor
 
 all: $(TARGETS)
 
-# 각 정렬 프로그램 빌드 규칙
-quick: quick.o sort.o
+.SECONDARY: $(addprefix $(OBJ_DIR)/,$(addsuffix .o,$(PROGRAMS))) $(OBJ_DIR)/sort.o
+
+$(BIN_DIR) $(OBJ_DIR):
+	mkdir -p $@
+
+$(BIN_DIR)/%: $(OBJ_DIR)/%.o $(OBJ_DIR)/sort.o | $(BIN_DIR)
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
-insert: insert.o sort.o
-	$(CXX) $(CXXFLAGS) $^ -o $@
+$(BIN_DIR)/monitor: $(SRC_DIR)/monitor.cc | $(BIN_DIR)
+	$(CXX) $(CXXFLAGS) $< -o $@
 
-merge: merge.o sort.o
-	$(CXX) $(CXXFLAGS) $^ -o $@
-
-bubble: bubble.o sort.o
-	$(CXX) $(CXXFLAGS) $^ -o $@
-
-heap: heap.o sort.o
-	$(CXX) $(CXXFLAGS) $^ -o $@
-
-select: select.o sort.o
-	$(CXX) $(CXXFLAGS) $^ -o $@
-
-tournament: tournament.o sort.o
-	$(CXX) $(CXXFLAGS) $^ -o $@
-
-shaker: shaker.o sort.o
-	$(CXX) $(CXXFLAGS) $^ -o $@
-
-comb: comb.o sort.o
-	$(CXX) $(CXXFLAGS) $^ -o $@
-
-intro: intro.o sort.o
-	$(CXX) $(CXXFLAGS) $^ -o $@
-
-library: library.o sort.o
-	$(CXX) $(CXXFLAGS) $^ -o $@
-
-tim: tim.o sort.o
-	$(CXX) $(CXXFLAGS) $^ -o $@
-
-monitor:
-	$(CXX) $(CXXFLAGS) monitor.cc -o $@
-# 오브젝트 파일 빌드 규칙
-%.o: %.cc sort.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-sort.o: sort.cc sort.h
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cc $(SRC_DIR)/sort.h | $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f *.o $(TARGETS)
+	rm -rf build bin

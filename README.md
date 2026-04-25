@@ -1,21 +1,24 @@
 # CSE331 Algorithm Assignments
 
-알고리즘 과목 과제를 정리한 저장소다. 각 과제는 구현 코드, 실험 데이터, 결과 파일, 보고서를 분리해서 확인할 수 있도록 재구성했다.
+This repository contains coursework projects for CSE331 Algorithm. Each project includes implementation code, input datasets, experiment outputs, and the submitted report.
 
-## 구성
+## Projects
 
-- [assignment1](./assignment1/README.md): 여러 정렬 알고리즘 구현 및 성능 비교. `Timsort` 구현이 포함되어 있다.
-- [assignment2](./assignment2/README.md): TSP 근사 알고리즘들과 `Held-Karp` 기반 정확해를 비교한 실험.
-- [reports](./reports): 제출용 보고서 PDF 보관 디렉토리
+- [Assignment 1](./assignment1/README.md): Sorting algorithm implementations and performance experiments across multiple input distributions.
+- [Assignment 2](./assignment2/README.md): Traveling Salesman Problem experiments using approximation methods and Held-Karp-based solvers.
 
-## 보고서
+## Repository Layout
+
+```text
+.
+├── assignment1/   # Sorting algorithms, test data, scripts, and results
+├── assignment2/   # TSP algorithms, datasets, notebooks, and results
+└── reports/       # Submitted PDF reports
+```
+
+## Reports
 
 - [Assignment 1 Report](./reports/CSE331___Assignment_1.pdf)
 - [Assignment 2 Report](./reports/CSE331___Assignment_2.pdf)
 
-## 메모
-
-- 루트 README는 개요만 제공하고, 실행 방법과 세부 구조는 각 과제 README에 정리했다.
-- 과제별 상세 문서는 아래 링크를 사용하면 된다.
-  - [assignment1/README.md](./assignment1/README.md)
-  - [assignment2/README.md](./assignment2/README.md)
+See each assignment README for build commands, run commands, and directory details.
